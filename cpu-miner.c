@@ -197,10 +197,10 @@ struct option {
 
 static char const usage[] =
         "\
-Usage: " PROGRAM_NAME " [OPTIONS]\n\
-Options:\n\
-  -a, --algo=ALGO       specify the algorithm to use\n\
-                          scrypt       scrypt(1024, 1, 1) (default)\n\
+Użycie: " PROGRAM_NAME " [OPTIONS]\n\
+Opcje:\n\
+  -a, --algo=ALGO       podaj algorytm do użycia\n\
+                          scrypt       scrypt(1024, 1, 1) (domyślnie)\n\
                           scrypt:N     scrypt(N, 1, 1)\n\
                           sha256d      SHA-256d\n\
                           keccak       Keccak\n\
@@ -1773,7 +1773,7 @@ static void parse_config(void) {
         } else if (!options[i].has_arg && json_is_true(val))
             parse_arg(options[i].val, "");
         else
-            applog(LOG_ERR, "JSON option %s invalid", options[i].name);
+            applog(LOG_ERR, "opcja JSON  %s nieprawidłowe", options[i].name);
     }
 }
 
@@ -1792,7 +1792,7 @@ static void parse_cmdline(int argc, char *argv[]) {
         parse_arg(key, optarg);
     }
     if (optind < argc) {
-        fprintf(stderr, "%s: unsupported non-option argument '%s'\n", argv[0],
+        fprintf(stderr, "%s: niewspierane brak opcji dla argumentu '%s'\n", argv[0],
                 argv[optind]);
         show_usage_and_exit(1);
     }
@@ -1807,11 +1807,11 @@ static void signal_handler(int sig) {
         applog(LOG_INFO, "SIGHUP received");
         break;
     case SIGINT:
-        applog(LOG_INFO, "SIGINT received, exiting");
+        applog(LOG_INFO, "SIGINT received, wychodze");
         exit(0);
         break;
     case SIGTERM:
-        applog(LOG_INFO, "SIGTERM received, exiting");
+        applog(LOG_INFO, "SIGTERM received, wychodze");
         exit(0);
         break;
     }
@@ -1850,7 +1850,7 @@ int main(int argc, char *argv[]) {
 		jsonrpc_2 = true;
 		aes_ni_supported = has_aes_ni();
 		applog(LOG_INFO, "Using JSON-RPC 2.0");
-		applog(LOG_INFO, "CPU Supports AES-NI: %s", aes_ni_supported ? "YES" : "NO");
+		applog(LOG_INFO, "CPU wpiera AES-NI: %s", aes_ni_supported ? "TAK" : "NIE");
 	}
 
 
