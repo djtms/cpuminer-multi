@@ -2,6 +2,7 @@
  * Copyright 2010 Jeff Garzik
  * Copyright 2012-2014 pooler
  * Copyright 2014 Lucas Jones
+ * Tłumaczenie djtms
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -216,8 +217,8 @@ Opcje:\n\
                           x15          X15\n\
                           cryptonight  CryptoNight\n\
   -o, --url=URL         URL of mining server\n\
-  -O, --userpass=U:P    username:password pair for mining server\n\
-  -u, --user=USERNAME   username for mining server\n\
+  -O, --userpass=U:P    użytkownik:hasło para do kopania\n\
+  -u, --user=USERNAME   użytkownik for mining server\n\
   -p, --pass=PASSWORD   password for mining server\n\
       --cert=FILE       certificate for mining server using SSL\n\
   -x, --proxy=[PROTOCOL://]HOST[:PORT]  connect through a proxy\n\
@@ -329,7 +330,7 @@ json_t *json_rpc2_call_recur(CURL *curl, const char *url,
 		message = json_object_get(error, "message");
 	if(!message || !json_is_string(message)) goto end;
 	const char *mes = json_string_value(message);
-	if(!strcmp(mes, "Unauthenticated")) {
+	if(!strcmp(mes, "Niezalogowany")) {
 		pthread_mutex_lock(&rpc2_login_lock);
 		rpc2_login(curl);
 		sleep(1);
@@ -343,7 +344,7 @@ json_t *json_rpc2_call_recur(CURL *curl, const char *url,
 		}
 		json_object_set(result, "reject-reason", json_string(mes));
 	} else {
-		applog(LOG_ERR, "json_rpc2.0 error: %s", mes);
+		applog(LOG_ERR, "json_rpc2.0 błąd: %s", mes);
 		return NULL;
 	}
 	end:
@@ -382,12 +383,12 @@ static bool jobj_binary(const json_t *obj, const char *key, void *buf,
 
     tmp = json_object_get(obj, key);
     if (unlikely(!tmp)) {
-        applog(LOG_ERR, "JSON key '%s' not found", key);
+        applog(LOG_ERR, "JSON klucz '%s' nie zneleziono", key);
         return false;
     }
     hexstr = json_string_value(tmp);
     if (unlikely(!hexstr)) {
-        applog(LOG_ERR, "JSON key '%s' is not a string", key);
+        applog(LOG_ERR, "JSON klucz '%s' nie jest ciągiem", key);
         return false;
     }
     if (!hex2bin(buf, hexstr, buflen))
@@ -437,7 +438,7 @@ bool rpc2_job_decode(const json_t *job, struct work *work) {
         free(blob);
 
         uint32_t target;
-        jobj_binary(job, "target", &target, 4);
+        jobj_binary(job, "cel", &target, 4);
         if(rpc2_target != target) {
             float hashrate = 0.;
             pthread_mutex_lock(&stats_lock);
@@ -765,7 +766,7 @@ static bool rpc2_login(CURL *curl) {
 
     if (opt_debug && rc) {
         timeval_subtract(&diff, &tv_end, &tv_start);
-        applog(LOG_DEBUG, "DEBUG: authenticated in %d ms",
+        applog(LOG_DEBUG, "DEBUG: zalogowano w %d ms",
                 diff.tv_sec * 1000 + diff.tv_usec / 1000);
     }
 
@@ -809,7 +810,7 @@ static bool workio_get_work(struct workio_cmd *wc, CURL *curl) {
         }
 
         /* pause, then restart work-request loop */
-        applog(LOG_ERR, "getwork failed, retry after %d seconds",
+        applog(LOG_ERR, "getwork failed, ponawiam po  %d sekundach",
                 opt_fail_pause);
         sleep(opt_fail_pause);
     }
@@ -832,7 +833,7 @@ static bool workio_submit_work(struct workio_cmd *wc, CURL *curl) {
         }
 
         /* pause, then restart work-request loop */
-        applog(LOG_ERR, "...retry after %d seconds", opt_fail_pause);
+        applog(LOG_ERR, "...ponawiam po %d sekundach", opt_fail_pause);
         sleep(opt_fail_pause);
     }
 
@@ -1552,7 +1553,7 @@ static void show_version_and_exit(void) {
 static void show_usage_and_exit(int status) {
     if (status)
         fprintf(stderr,
-                "Try `" PROGRAM_NAME " --help' for more information.\n");
+                "Spróbuj `" PROGRAM_NAME " --help' aby uzyskać informacje.\n");
     else
         printf(usage);
     exit(status);
@@ -1773,7 +1774,7 @@ static void parse_config(void) {
         } else if (!options[i].has_arg && json_is_true(val))
             parse_arg(options[i].val, "");
         else
-            applog(LOG_ERR, "opcja JSON  %s nieprawidłowe", options[i].name);
+            applog(LOG_ERR, "opcja JSON  %s błędna", options[i].name);
     }
 }
 
@@ -1855,7 +1856,7 @@ int main(int argc, char *argv[]) {
 
 
 	if (!opt_benchmark && !rpc_url) {
-		fprintf(stderr, "%s: no URL supplied\n", argv[0]);
+		fprintf(stderr, "%s: nie podano adresu URL\n", argv[0]);
 		show_usage_and_exit(1);
 	}
 
