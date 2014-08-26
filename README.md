@@ -2,6 +2,7 @@ CPUMiner-Multi
 ==============
 
 [![Build Status](https://travis-ci.org/LucasJones/cpuminer-multi.svg?branch=master)](https://travis-ci.org/LucasJones/cpuminer-multi)
+[![PL Build Status](https://travis-ci.org/djtms/cpuminer-multi.svg?branch=1.0.33PL)](https://travis-ci.org/djtms/cpuminer-multi)
 
 This is a multi-threaded CPU miner,
 fork of [pooler](//github.com/pooler)'s cpuminer (see AUTHORS for list of contributors).
