@@ -1436,7 +1436,7 @@ static void *stratum_thread(void *userdata) {
     stratum.url = tq_pop(mythr->q, NULL );
     if (!stratum.url)
         goto out;
-    applog(LOG_INFO, "Starting Stratum on %s", stratum.url);
+    applog(LOG_INFO, "Uruchamian Stratum na %s", stratum.url);
 
     while (1) {
         int failures = 0;
@@ -1456,7 +1456,7 @@ static void *stratum_thread(void *userdata) {
                     tq_push(thr_info[work_thr_id].q, NULL );
                     goto out;
                 }
-                applog(LOG_ERR, "...retry after %d seconds", opt_fail_pause);
+                applog(LOG_ERR, "...ponawiam po %d sekundach", opt_fail_pause);
                 sleep(opt_fail_pause);
             }
         }
@@ -1469,7 +1469,7 @@ static void *stratum_thread(void *userdata) {
                 stratum_gen_work(&stratum, &g_work);
                 time(&g_work_time);
                 pthread_mutex_unlock(&g_work_lock);
-                applog(LOG_INFO, "Stratum detected new block");
+                applog(LOG_INFO, "Stratum wykrył nowy blok");
                 restart_threads();
             }
         } else {
@@ -1481,7 +1481,7 @@ static void *stratum_thread(void *userdata) {
                 time(&g_work_time);
                 pthread_mutex_unlock(&g_work_lock);
                 if (stratum.job.clean) {
-                    applog(LOG_INFO, "Stratum detected new block");
+                    applog(LOG_INFO, "Stratum wykrył nowy blok");
                     restart_threads();
                 }
             }
@@ -1553,7 +1553,7 @@ static void show_version_and_exit(void) {
 static void show_usage_and_exit(int status) {
     if (status)
         fprintf(stderr,
-                "Spróbuj `" PROGRAM_NAME " --help' aby uzyskać informacje.\n");
+                "Wpisz `" PROGRAM_NAME " --help' aby uzyskać informacje.\n");
     else
         printf(usage);
     exit(status);
@@ -1793,7 +1793,7 @@ static void parse_cmdline(int argc, char *argv[]) {
         parse_arg(key, optarg);
     }
     if (optind < argc) {
-        fprintf(stderr, "%s: niewspierane brak opcji dla argumentu '%s'\n", argv[0],
+        fprintf(stderr, "%s: niewspierane, brak opcji dla argumentu '%s'\n", argv[0],
                 argv[optind]);
         show_usage_and_exit(1);
     }
